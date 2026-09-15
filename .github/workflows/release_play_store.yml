@@ -1,0 +1,63 @@
+name: Deploy Tropo to Google Play Console (Windows)
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  deploy:
+    name: Build & Publish Release App Bundle
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Decode Signing Keystore
+        shell: bash
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release-keystore.jks
+
+      - name: Build Release App Bundle (.aab)
+        shell: bash
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          ./gradlew bundleRelease \
+            -Pandroid.injected.signing.store.file=$(pwd)/app/release-keystore.jks \
+            -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD \
+            -Pandroid.injected.signing.key.alias=$KEY_ALIAS \
+            -Pandroid.injected.signing.key.password=$KEY_PASSWORD
+
+      - name: Decode Service Account JSON
+        shell: bash
+        run: |
+          echo "${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}" | base64 --decode > service-account.json
+
+      - name: Upload to Google Play Store (Internal Track)
+        uses: rslibo/google-play-action@v1
+        with:
+          serviceAccountJson: service-account.json
+          packageName: io.github.erexer.tropo
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: internal
+          status: completed
+
+      - name: Clean Up Sensitive Files
+        if: always()
+        shell: bash
+        run: |
+          rm -f app/release-keystore.jks
+          rm -f service-account.json
