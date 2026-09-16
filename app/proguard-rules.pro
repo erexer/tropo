@@ -1,0 +1,2 @@
+-keep class io.github.erexer.tropo.data.remote.model.** { *; }
+-keep class io.github.erexer.tropo.data.local.** { *; }

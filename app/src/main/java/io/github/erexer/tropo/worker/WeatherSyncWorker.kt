@@ -1,41 +1,22 @@
-package com.tropo.worker
+package io.github.erexer.tropo.worker
 
 import android.content.Context
-import androidx.glance.appwidget.updateAll
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.tropo.data.local.WeatherDao
-import com.tropo.data.preferences.UserPreferencesRepository
-import com.tropo.data.remote.WeatherApiClient
-import com.tropo.ui.widget.TropoWeatherWidget
-import kotlinx.coroutines.flow.first
+import io.github.erexer.tropo.TropoApplication
 
 class WeatherSyncWorker(
-    appContext: Context,
-    workerParams: WorkerParameters,
-    private val weatherApiClient: WeatherApiClient,
-    private val weatherDao: WeatherDao,
-    private val userPreferencesRepository: UserPreferencesRepository
-) : CoroutineWorker(appContext, workerParams) {
+    context: Context,
+    params: WorkerParameters
+) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
+        val appContainer = (applicationContext as TropoApplication).container
         return try {
-            val userPrefs = userPreferencesRepository.userPreferencesFlow.first()
-            val primaryLocation = weatherDao.getPrimaryLocation()
-
-            if (primaryLocation != null) {
-                val remoteData = weatherApiClient.getForecast(
-                    latitude = primaryLocation.latitude,
-                    longitude = primaryLocation.longitude
-                )
-                weatherDao.insertWeather(remoteData.toEntity(primaryLocation.id))
-            }
-
-            TropoWeatherWidget().updateAll(applicationContext)
-
+            appContainer.weatherRepository.getCurrentWeather()
             Result.success()
         } catch (e: Exception) {
-            if (runAttemptCount < 3) Result.retry() else Result.failure()
+            Result.retry()
         }
     }
 }

@@ -1,63 +1,70 @@
-package com.tropo.ui.home
+package io.github.erexer.tropo.ui.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.tropo.ui.canvas.WeatherParticleCanvas
-import com.tropo.ui.common.shimmerLoading
+import androidx.compose.ui.unit.sp
+import io.github.erexer.tropo.data.repository.WeatherRepository
+import io.github.erexer.tropo.ui.canvas.WeatherParticleCanvas
+import io.github.erexer.tropo.ui.theme.LocalTropoColors
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeatherHomeScreen(
-    isRefreshing: Boolean,
-    isLoading: Boolean,
-    weatherCode: Int,
-    temperatureText: String,
-    locationName: String,
-    onRefresh: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(modifier = modifier.fillMaxSize()) {
-        WeatherParticleCanvas(weatherCode = weatherCode)
+fun WeatherHomeScreen(repository: WeatherRepository, onOpenSettings: () -> Unit) {
+    val viewModel = remember { WeatherHomeViewModel(repository) }
+    val uiState by viewModel.uiState.collectAsState()
+    val colors = LocalTropoColors.current
 
-        PullToRefreshBox(
-            isRefreshing = isRefreshing,
-            onRefresh = onRefresh,
-            modifier = Modifier.fillMaxSize()
-        ) {
+    Box(modifier = Modifier.fillMaxSize().background(colors.background)) {
+        WeatherParticleCanvas()
+
+        if (uiState.isLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        } else {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(24.dp)
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                if (isLoading) {
-                    Box(
-                        modifier = Modifier
-                            .width(180.dp)
-                            .height(32.dp)
-                            .shimmerLoading()
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Box(
-                        modifier = Modifier
-                            .width(120.dp)
-                            .height(64.dp)
-                            .shimmerLoading()
-                    )
-                } else {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
-                        text = locationName,
-                        style = MaterialTheme.typography.headlineMedium
+                        text = uiState.location?.name ?: "Unknown",
+                        color = colors.textPrimary,
+                        fontSize = 28.sp
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = onOpenSettings) {
+                        Text("Settings")
+                    }
+                }
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    val temp = uiState.weather?.temperature ?: 0.0
+                    val displayTemp = if (uiState.isCelsius) temp else (temp * 9 / 5) + 32
+                    val unit = if (uiState.isCelsius) "°C" else "°F"
+
                     Text(
-                        text = temperatureText,
-                        style = MaterialTheme.typography.displayLarge
+                        text = "${displayTemp.toInt()}$unit",
+                        color = colors.textPrimary,
+                        fontSize = 72.sp
+                    )
+                    Text(
+                        text = "Wind: ${uiState.weather?.windSpeed ?: 0.0} km/h",
+                        color = colors.textSecondary,
+                        fontSize = 18.sp
                     )
                 }
+
+                Spacer(modifier = Modifier.height(48.dp))
             }
         }
     }

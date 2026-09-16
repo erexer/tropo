@@ -1,11 +1,10 @@
-package com.tropo.data.local
+package io.github.erexer.tropo.data.local
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -13,7 +12,6 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class WeatherDaoTest {
-
     private lateinit var database: TropoDatabase
     private lateinit var dao: WeatherDao
 
@@ -27,53 +25,15 @@ class WeatherDaoTest {
     }
 
     @After
-    fun teardown() {
+    fun tearDown() {
         database.close()
     }
 
     @Test
-    fun `insertLocation and getPrimaryLocation returns inserted entity`() = runTest {
-        val location = LocationEntity(
-            id = "loc_1",
-            name = "Seattle",
-            latitude = 47.6062,
-            longitude = -122.3321,
-            isPrimary = true
-        )
-
-        dao.insertLocation(location)
-        val retrieved = dao.getPrimaryLocation()
-
-        assertNotNull(retrieved)
-        assertEquals("Seattle", retrieved?.name)
-        assertEquals(true, retrieved?.isPrimary)
-    }
-
-    @Test
-    fun `getPrimaryLocationWithWeather returns populated relation`() = runTest {
-        val location = LocationEntity(
-            id = "loc_seattle",
-            name = "Seattle",
-            latitude = 47.6062,
-            longitude = -122.3321,
-            isPrimary = true
-        )
-        val weather = WeatherEntity(
-            locationId = "loc_seattle",
-            currentTemperature = 18.5,
-            windSpeed = 12.3,
-            weatherCode = 61,
-            conditionDescription = "Rain",
-            updatedAtTimestamp = System.currentTimeMillis()
-        )
-
-        dao.insertLocation(location)
-        dao.insertWeather(weather)
-
-        val relation = dao.getPrimaryLocationWithWeather()
-
-        assertNotNull(relation)
-        assertEquals("Seattle", relation?.location?.name)
-        assertEquals(18.5, relation?.weather?.currentTemperature ?: 0.0, 0.01)
+    fun insertAndGetWeather() = runBlocking {
+        val entity = WeatherEntity(1L, 22.5, 0, 50, 10.0, System.currentTimeMillis())
+        dao.insertWeather(entity)
+        val result = dao.getWeather(1L)
+        assertEquals(22.5, result?.temperature ?: 0.0, 0.01)
     }
 }

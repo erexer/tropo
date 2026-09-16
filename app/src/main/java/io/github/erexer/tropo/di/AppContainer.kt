@@ -1,48 +1,54 @@
-package com.tropo.di
+package io.github.erexer.tropo.di
 
 import android.content.Context
-import androidx.work.ListenableWorker
-import androidx.work.WorkerFactory
-import androidx.work.WorkerParameters
-import com.tropo.data.local.TropoDatabase
-import com.tropo.data.local.WeatherDao
-import com.tropo.data.preferences.UserPreferencesRepository
-import com.tropo.data.remote.WeatherApiClient
-import com.tropo.worker.WeatherSyncWorker
+import androidx.room.Room
+import io.github.erexer.tropo.data.local.TropoDatabase
+import io.github.erexer.tropo.data.preferences.UserPreferences
+import io.github.erexer.tropo.data.remote.GeocodingApi
+import io.github.erexer.tropo.data.remote.WeatherApiClient
+import io.github.erexer.tropo.data.repository.WeatherRepository
+import io.github.erexer.tropo.data.repository.WeatherRepositoryImpl
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 
 class AppContainer(private val context: Context) {
-    val database: TropoDatabase by lazy { TropoDatabase.getInstance(context) }
-    val weatherDao: WeatherDao by lazy { database.weatherDao() }
-    val userPreferencesRepository: UserPreferencesRepository by lazy { UserPreferencesRepository(context) }
-    val weatherApiClient: WeatherApiClient by lazy { WeatherApiClient() }
 
-    val workerFactory: WorkerFactory by lazy {
-        TropoWorkerFactory(weatherApiClient, weatherDao, userPreferencesRepository)
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
     }
-}
 
-class TropoWorkerFactory(
-    private val weatherApiClient: WeatherApiClient,
-    private val weatherDao: WeatherDao,
-    private val userPreferencesRepository: UserPreferencesRepository
-) : WorkerFactory() {
-
-    override fun createWorker(
-        appContext: Context,
-        workerClassName: String,
-        workerParameters: WorkerParameters
-    ): ListenableWorker? {
-        return when (workerClassName) {
-            WeatherSyncWorker::class.java.name -> {
-                WeatherSyncWorker(
-                    appContext,
-                    workerParameters,
-                    weatherApiClient,
-                    weatherDao,
-                    userPreferencesRepository
-                )
-            }
-            else -> null
+    private val httpClient = HttpClient(Android) {
+        install(ContentNegotiation) {
+            json(json)
         }
+    }
+
+    val database: TropoDatabase by lazy {
+        Room.databaseBuilder(context, TropoDatabase::class.java, "tropo_db").build()
+    }
+
+    val userPreferences: UserPreferences by lazy {
+        UserPreferences(context)
+    }
+
+    val weatherApiClient: WeatherApiClient by lazy {
+        WeatherApiClient(httpClient)
+    }
+
+    val geocodingApi: GeocodingApi by lazy {
+        GeocodingApi(httpClient)
+    }
+
+    val weatherRepository: WeatherRepository by lazy {
+        WeatherRepositoryImpl(
+            weatherDao = database.weatherDao(),
+            weatherApiClient = weatherApiClient,
+            geocodingApi = geocodingApi,
+            userPreferences = userPreferences
+        )
     }
 }

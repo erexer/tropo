@@ -1,71 +1,43 @@
-package com.tropo.ui.settings
+package io.github.erexer.tropo.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tropo.data.preferences.AppTheme
-import com.tropo.data.preferences.SpeedUnit
-import com.tropo.data.preferences.TemperatureUnit
-import com.tropo.data.preferences.UserPreferencesRepository
-import com.tropo.data.remote.GeocodingApiClient
-import com.tropo.data.remote.GeocodingLocation
+import io.github.erexer.tropo.data.local.LocationEntity
+import io.github.erexer.tropo.data.repository.WeatherRepository
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-sealed interface SearchUiState {
-    data object Idle : SearchUiState
-    data object Loading : SearchUiState
-    data class Success(val locations: List<GeocodingLocation>) : SearchUiState
-    data class Error(val message: String) : SearchUiState
-}
-
 @OptIn(FlowPreview::class)
-class SettingsViewModel(
-    private val preferencesRepository: UserPreferencesRepository,
-    private val geocodingClient: GeocodingApiClient
-) : ViewModel() {
+class SettingsViewModel(private val repository: WeatherRepository) : ViewModel() {
 
-    val userPreferences = preferencesRepository.userPreferencesFlow
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = com.tropo.data.preferences.UserPreferences()
-        )
+    val isCelsius: Flow<Boolean> = repository.isCelsius()
 
     private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+    val searchQuery = _searchQuery.asStateFlow()
 
-    val searchResults: StateFlow<SearchUiState> = _searchQuery
-        .debounce(300)
-        .distinctUntilChanged()
+    val searchResults: StateFlow<List<LocationEntity>> = _searchQuery
+        .debounce(400)
         .mapLatest { query ->
-            if (query.length < 2) {
-                SearchUiState.Idle
-            } else {
-                val results = geocodingClient.searchLocations(query)
-                if (results.isEmpty()) SearchUiState.Error("No matching locations found.")
-                else SearchUiState.Success(results)
-            }
+            if (query.length < 2) emptyList()
+            else repository.searchLocations(query)
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = SearchUiState.Idle
-        )
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    fun onQueryChanged(newQuery: String) {
+    fun onQueryChange(newQuery: String) {
         _searchQuery.value = newQuery
     }
 
-    fun setTemperatureUnit(unit: TemperatureUnit) {
-        viewModelScope.launch { preferencesRepository.updateTemperatureUnit(unit) }
+    fun selectLocation(location: LocationEntity) {
+        viewModelScope.launch {
+            repository.selectLocation(location)
+            _searchQuery.value = ""
+        }
     }
 
-    fun setSpeedUnit(unit: SpeedUnit) {
-        viewModelScope.launch { preferencesRepository.updateSpeedUnit(unit) }
-    }
-
-    fun setAppTheme(theme: AppTheme) {
-        viewModelScope.launch { preferencesRepository.updateAppTheme(theme) }
+    fun toggleUnit(isCelsius: Boolean) {
+        viewModelScope.launch {
+            repository.setCelsius(isCelsius)
+        }
     }
 }

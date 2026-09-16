@@ -1,34 +1,27 @@
-package com.tropo.data.local
+package io.github.erexer.tropo.data.local
 
-import androidx.room.*
-import kotlinx.coroutines.flow.Flow
-
-data class LocationWithWeather(
-    @Embedded val location: LocationEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "locationId"
-    )
-    val weather: WeatherEntity?
-)
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 @Dao
 interface WeatherDao {
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLocation(location: LocationEntity)
+    @Query("SELECT * FROM weather WHERE locationId = :locationId")
+    suspend fun getWeather(locationId: Long): WeatherEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeather(weather: WeatherEntity)
 
-    @Query("SELECT * FROM locations WHERE isPrimary = 1 LIMIT 1")
-    suspend fun getPrimaryLocation(): LocationEntity?
+    @Query("SELECT * FROM locations WHERE isSelected = 1 LIMIT 1")
+    suspend fun getSelectedLocation(): LocationEntity?
 
-    @Transaction
-    @Query("SELECT * FROM locations WHERE isPrimary = 1 LIMIT 1")
-    suspend fun getPrimaryLocationWithWeather(): LocationWithWeather?
-
-    @Transaction
     @Query("SELECT * FROM locations")
-    fun getAllLocationsWithWeather(): Flow<List<LocationWithWeather>>
+    suspend fun getAllLocations(): List<LocationEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLocations(locations: List<LocationEntity>)
+
+    @Query("UPDATE locations SET isSelected = (id = :selectedId)")
+    suspend fun setSelectedLocation(selectedId: Long)
 }

@@ -1,27 +1,14 @@
-package com.tropo.data.local
+package io.github.erexer.tropo.data.local
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(
-    tableName = "weather_cache",
-    foreignKeys = [
-        ForeignKey(
-            entity = LocationEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["locationId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ],
-    indices = [Index(value = ["locationId"])]
-)
+@Entity(tableName = "weather")
 data class WeatherEntity(
-    @PrimaryKey val locationId: String,
-    val currentTemperature: Double,
-    val windSpeed: Double,
+    @PrimaryKey val locationId: Long,
+    val temperature: Double,
     val weatherCode: Int,
-    val conditionDescription: String,
-    val updatedAtTimestamp: Long
+    val humidity: Int,
+    val windSpeed: Double,
+    val updatedAt: Long
 )
