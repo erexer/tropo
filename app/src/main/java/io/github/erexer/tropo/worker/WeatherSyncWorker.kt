@@ -7,9 +7,8 @@ import io.github.erexer.tropo.TropoApplication
 
 class WeatherSyncWorker(
     context: Context,
-    params: WorkerParameters
+    params: WorkerParameters,
 ) : CoroutineWorker(context, params) {
-
     override suspend fun doWork(): Result {
         val appContainer = (applicationContext as TropoApplication).container
         return try {

@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GeocodingResponse(
-    val results: List<GeocodingResult>? = null
+    val results: List<GeocodingResult>? = null,
 )
 
 @Serializable
@@ -13,5 +13,7 @@ data class GeocodingResult(
     val name: String,
     val country: String = "",
     val latitude: Double,
-    val longitude: Double
+    val longitude: Double,
+    val admin1: String? = null,
+    val population: Long? = null,
 )

@@ -1,0 +1,76 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Upper-atmosphere glow -->
+    <path android:pathData="M-32,128a86,86 0,1 0,172,0a86,86 0,1 0,-172,0Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="54"
+                android:centerY="128"
+                android:gradientRadius="86">
+                <item android:offset="0.88" android:color="#CC438DCE" />
+                <item android:offset="0.94" android:color="#55438DCE" />
+                <item android:offset="1" android:color="#004FC3F7" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:fillColor="#FF369BDC"
+        android:pathData="M-26,128a80,80 0,1 0,160,0a80,80 0,1 0,-160,0Z" />
+    <path android:fillColor="#FF78D9EE"
+        android:pathData="M-23.5,128a77.5,77.5 0,1 0,155,0a77.5,77.5 0,1 0,-155,0Z" />
+    <!-- Troposphere band -->
+    <path
+        android:fillColor="#FFD8F6FF"
+        android:pathData="M-19,128a73,73 0,1 0,146,0a73,73 0,1 0,-146,0Z" />
+    <!-- Sunset glow above the troposphere: tapered crescent fading at both ends -->
+    <path android:pathData="M14,64Q54,34 94,64Q54,38 14,64Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="14"
+                android:startY="0"
+                android:endX="94"
+                android:endY="0">
+                <item android:offset="0" android:color="#00FFB469" />
+                <item android:offset="0.35" android:color="#AAFFAE65" />
+                <item android:offset="0.5" android:color="#FFFFD089" />
+                <item android:offset="0.65" android:color="#AAFFAE65" />
+                <item android:offset="1" android:color="#00FFB469" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Ocean -->
+    <path android:pathData="M-16,128a70,70 0,1 0,140,0a70,70 0,1 0,-140,0Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="54"
+                android:startY="58"
+                android:endX="54"
+                android:endY="108">
+                <item android:offset="0" android:color="#FF1E6FE0" />
+                <item android:offset="1" android:color="#FF0B3A82" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Cloud shadows -->
+    <group android:translateY="0.6">
+        <path
+            android:fillAlpha="0.22"
+            android:fillColor="#FF0A2E66"
+            android:pathData="@string/ic_launcher_clouds" />
+    </group>
+    <path android:pathData="@string/ic_launcher_clouds">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="54" android:startY="66"
+                android:endX="54" android:endY="90">
+                <item android:offset="0" android:color="#FFF6F8FA" />
+                <item android:offset="1" android:color="#FFD3DDE5" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>

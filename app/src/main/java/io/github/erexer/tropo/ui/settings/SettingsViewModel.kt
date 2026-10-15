@@ -2,42 +2,74 @@ package io.github.erexer.tropo.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.erexer.tropo.data.local.LocationEntity
+import io.github.erexer.tropo.data.preferences.AppThemeMode
+import io.github.erexer.tropo.data.preferences.CurrentField
+import io.github.erexer.tropo.data.preferences.DailyStat
+import io.github.erexer.tropo.data.preferences.HourlyField
+import io.github.erexer.tropo.data.preferences.RainUnit
+import io.github.erexer.tropo.data.preferences.TemperatureUnit
+import io.github.erexer.tropo.data.preferences.WeatherUnits
+import io.github.erexer.tropo.data.preferences.WindUnit
 import io.github.erexer.tropo.data.repository.WeatherRepository
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-@OptIn(FlowPreview::class)
-class SettingsViewModel(private val repository: WeatherRepository) : ViewModel() {
+class SettingsViewModel(
+    private val repository: WeatherRepository,
+) : ViewModel() {
+    val units: Flow<WeatherUnits> = repository.units()
+    val hourlyFields: Flow<Set<HourlyField>> = repository.hourlyFields()
+    val dailyStats: Flow<Set<DailyStat>> = repository.dailyStats()
+    val currentFields: Flow<Set<CurrentField>> = repository.currentFields()
+    private val _preferenceError = MutableStateFlow<String?>(null)
+    val preferenceError = _preferenceError.asStateFlow()
+    val themeMode: Flow<AppThemeMode> = repository.themeMode()
 
-    val isCelsius: Flow<Boolean> = repository.isCelsius()
-
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery = _searchQuery.asStateFlow()
-
-    val searchResults: StateFlow<List<LocationEntity>> = _searchQuery
-        .debounce(400)
-        .mapLatest { query ->
-            if (query.length < 2) emptyList()
-            else repository.searchLocations(query)
-        }
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-
-    fun onQueryChange(newQuery: String) {
-        _searchQuery.value = newQuery
+    fun setThemeMode(themeMode: AppThemeMode) {
+        savePreference { repository.setThemeMode(themeMode) }
     }
 
-    fun selectLocation(location: LocationEntity) {
-        viewModelScope.launch {
-            repository.selectLocation(location)
-            _searchQuery.value = ""
-        }
+    fun setUnits(units: WeatherUnits) {
+        savePreference { repository.setUnits(units) }
     }
 
-    fun toggleUnit(isCelsius: Boolean) {
+    fun setTemperature(unit: TemperatureUnit) {
+        savePreference { repository.setTemperature(unit) }
+    }
+
+    fun setWind(unit: WindUnit) {
+        savePreference { repository.setWind(unit) }
+    }
+
+    fun setRain(unit: RainUnit) {
+        savePreference { repository.setRain(unit) }
+    }
+
+    fun setHourlyFields(fields: Set<HourlyField>) {
+        savePreference { repository.setHourlyFields(fields) }
+    }
+
+    fun setDailyStats(stats: Set<DailyStat>) {
+        savePreference { repository.setDailyStats(stats) }
+    }
+
+    fun setCurrentFields(fields: Set<CurrentField>) {
+        savePreference { repository.setCurrentFields(fields) }
+    }
+
+    private fun savePreference(save: suspend () -> Unit) {
         viewModelScope.launch {
-            repository.setCelsius(isCelsius)
+            try {
+                save()
+                _preferenceError.value = null
+            } catch (error: CancellationException) {
+                throw error
+            } catch (_: Exception) {
+                _preferenceError.value = "Could not save preferences."
+            }
         }
     }
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:WeatherGraph.kt$@Composable fun WeatherGraph( points: List&lt;HourlyPoint&gt;, selectedIndex: Int?, onPointSelected: (Int) -&gt; Unit, options: WeatherGraphOptions, modifier: Modifier = Modifier, )</ID>
+    <ID>CyclomaticComplexMethod:WeatherHomeViewModel.kt$WeatherHomeViewModel$fun loadData()</ID>
+    <ID>EmptyFunctionBlock:SettingsViewModelTest.kt$FakeRepository${}</ID>
+    <ID>FunctionNaming:TropoNavHost.kt$@Composable fun TropoNavHost(appContainer: AppContainer)</ID>
+    <ID>FunctionNaming:WeatherGraph.kt$@Composable fun WeatherGraph( points: List&lt;HourlyPoint&gt;, selectedIndex: Int?, onPointSelected: (Int) -&gt; Unit, options: WeatherGraphOptions, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:WeatherHomeScreen.kt$@Composable private fun ForecastError()</ID>
+    <ID>FunctionNaming:WeatherParticleCanvas.kt$@Composable fun WeatherParticleCanvas(modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:TropoDatabaseMigrationTest.kt$TropoDatabaseMigrationTest$@Test fun versionOneDatabaseMigratesToDailyForecastsFavoritesAndAirQuality()</ID>
+    <ID>LongMethod:WeatherGraph.kt$@Composable fun WeatherGraph( points: List&lt;HourlyPoint&gt;, selectedIndex: Int?, onPointSelected: (Int) -&gt; Unit, options: WeatherGraphOptions, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:WeatherHomeScreen.kt$@Composable @OptIn(ExperimentalMaterial3Api::class) @Suppress("FunctionNaming") fun WeatherHomeScreen( repository: WeatherRepository, refreshKey: Int, onOpenSettings: () -&gt; Unit, onOpenLocations: () -&gt; Unit, )</ID>
+    <ID>LongMethod:WeatherHomeViewModel.kt$WeatherHomeViewModel$fun loadData()</ID>
+    <ID>LongMethod:WeatherRepositoryImpl.kt$WeatherRepositoryImpl$override suspend fun getForecast(forecastDays: Int): Result&lt;ForecastSnapshot&gt;</ID>
+    <ID>LongMethod:WeatherRepositoryImplTest.kt$WeatherRepositoryImplTest$@Test fun forecastFallsBackToCacheWhenNetworkFails()</ID>
+    <ID>LongMethod:WeatherRepositoryImplTest.kt$WeatherRepositoryImplTest$@Test fun forecastPersistsHourlyAndDailyData()</ID>
+    <ID>MagicNumber:AirQualityCategory.kt$AirQualityCategory$100f</ID>
+    <ID>MagicNumber:AirQualityCategory.kt$AirQualityCategory$150f</ID>
+    <ID>MagicNumber:AirQualityCategory.kt$AirQualityCategory$200f</ID>
+    <ID>MagicNumber:AirQualityCategory.kt$AirQualityCategory$300f</ID>
+    <ID>MagicNumber:AirQualityCategory.kt$AirQualityCategory$50f</ID>
+    <ID>MagicNumber:CivilTwilightCalculator.kt$CivilTwilightCalculator$18.0</ID>
+    <ID>MagicNumber:CivilTwilightCalculator.kt$CivilTwilightCalculator$180.0</ID>
+    <ID>MagicNumber:CivilTwilightCalculator.kt$CivilTwilightCalculator$360.0</ID>
+    <ID>MagicNumber:CivilTwilightCalculator.kt$CivilTwilightCalculator$6.0</ID>
+    <ID>MagicNumber:CivilTwilightCalculator.kt$CivilTwilightCalculator$90.0</ID>
+    <ID>MagicNumber:Color.kt$0xFF10131A</ID>
+    <ID>MagicNumber:Color.kt$0xFF1C222E</ID>
+    <ID>MagicNumber:Color.kt$0xFF4A90E2</ID>
+    <ID>MagicNumber:Color.kt$0xFFA0AAB8</ID>
+    <ID>MagicNumber:Color.kt$0xFFFFFFFF</ID>
+    <ID>MagicNumber:GeocodingApi.kt$GeocodingApi$10</ID>
+    <ID>MagicNumber:TropoDatabase.kt$TropoDatabase.Companion.&lt;no name provided&gt;$3</ID>
+    <ID>MagicNumber:TropoDatabase.kt$TropoDatabase.Companion.&lt;no name provided&gt;$4</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$3</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$45</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$48</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$51</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$53</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$55</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$61</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$63</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$65</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$66</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$67</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$71</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$73</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$75</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$77</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$80</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$81</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$82</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$85</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$86</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$95</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$96</ID>
+    <ID>MagicNumber:WeatherCondition.kt$WeatherCondition$99</ID>
+    <ID>MagicNumber:WeatherParticleCanvas.kt$40</ID>
+    <ID>MatchingDeclarationName:WeatherGraph.kt$WeatherGraphOptions</ID>
+    <ID>MaxLineLength:AirQualityApiClientTest.kt$AirQualityApiClientTest$content = """{"timezone":"America/New_York","hourly":{"time":["2026-10-05T12:00"],"us_aqi":[42],"pm2_5":[8.5]}}"""</ID>
+    <ID>MaxLineLength:SettingsViewModelTest.kt$FakeRepository$override suspend fun getAirQuality(): Result&lt;AirQualitySnapshot&gt;</ID>
+    <ID>MaxLineLength:SettingsViewModelTest.kt$FakeRepository$override suspend fun getForecast(forecastDays: Int): Result&lt;ForecastSnapshot&gt;</ID>
+    <ID>MaxLineLength:UserPreferencesTest.kt$UserPreferencesTest$assertEquals(WeatherUnits(TemperatureUnit.FAHRENHEIT, WindUnit.MPH, RainUnit.INCH), preferences.units.first())</ID>
+    <ID>MaxLineLength:WeatherApiClient.kt$WeatherApiClient.Companion$"temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset,weather_code"</ID>
+    <ID>MaxLineLength:WeatherApiClientTest.kt$WeatherApiClientTest$content = """{"current":{"temperature_2m":18.5,"relative_humidity_2m":60,"apparent_temperature":18.0,"wind_speed_10m":12.0,"weather_code":1,"is_day":1,"time":"2026-09-16T12:00"}}"""</ID>
+    <ID>MaxLineLength:WeatherApiClientTest.kt$WeatherApiClientTest$content = """{"timezone":"America/Los_Angeles","hourly":{"time":["2026-10-01T12:00"],"temperature_2m":[68.0],"precipitation_probability":[20],"precipitation":[0.1],"dew_point_2m":[55.0],"wind_speed_10m":[5.0],"wind_direction_10m":[180],"uv_index":[4.0]},"daily":{"time":["2026-10-01"],"temperature_2m_max":[72.0],"temperature_2m_min":[55.0],"precipitation_sum":[0.2],"precipitation_probability_max":[40],"sunrise":["2026-10-01T06:30"],"sunset":["2026-10-01T18:10"],"weather_code":[2]}}"""</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$drawCircle(currentColor, CURRENT_POINT_RADIUS, Offset(x, temperatureY(value)))</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$drawCircle(surfaceColor, CURRENT_POINT_INNER_RADIUS, Offset(x, temperatureY(value)))</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$drawLine(separatorColor, Offset(x, 0f), Offset(x, plotHeight), strokeWidth = 1f)</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$drawPath(earlierTemperature, earlierColor, style = Stroke(width = 4f, cap = StrokeCap.Round))</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$drawPath(forecastTemperature, temperatureColor, style = Stroke(width = 6f, cap = StrokeCap.Round))</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$drawPath(paths.first, airQualityColor.copy(alpha = EARLIER_ALPHA), style = aqiStroke)</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$drawPath(paths.first, dewPointColor.copy(alpha = EARLIER_ALPHA), style = Stroke(width = 3f))</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$drawRect(nightColor, Offset(startX, 0f), Size(endX - startX, plotHeight))</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$lineTo(width, plotHeight - precipitationValues.last() / precipitationMax * plotHeight)</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$listOfNotNull(nights.firstOrNull()?.second, nights.lastOrNull()?.first)</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$pathEffect = PathEffect.dashPathEffect(floatArrayOf(DAY_DIVIDER_DASH, DAY_DIVIDER_GAP))</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$pathEffect = PathEffect.dashPathEffect(floatArrayOf(WIND_DASH, WIND_GAP))</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$points[index].forecastTime.take(DATE_LENGTH) != points[index - 1].forecastTime.take(DATE_LENGTH)</ID>
+    <ID>MaxLineLength:WeatherGraph.kt$topLeft = Offset(index * xStep - barWidth / 2f, plotHeight - uvHeight)</ID>
+    <ID>MaxLineLength:WeatherHomeViewModel.kt$WeatherHomeViewModel$errorMessage = if (weather == null) "Weather is unavailable. Check your connection and retry." else null</ID>
+    <ID>MaxLineLength:WeatherRepositoryImplTest.kt$WeatherRepositoryImplTest$respond(response.toString(), HttpStatusCode.OK, headersOf(HttpHeaders.ContentType, "application/json"))</ID>
+    <ID>MaxLineLength:WeatherRepositoryImplTest.kt$WeatherRepositoryImplTest.Companion$const val AIR_QUALITY_JSON = """{"timezone":"America/New_York","hourly":{"time":["2026-10-05T12:00"],"us_aqi":[42],"pm2_5":[8.5]}}"""</ID>
+    <ID>MaxLineLength:WeatherRepositoryImplTest.kt$WeatherRepositoryImplTest.Companion$const val FORECAST_JSON = """{"timezone":"America/Los_Angeles","hourly":{"time":["2026-10-01T12:00"],"temperature_2m":[68.0],"precipitation_probability":[20],"precipitation":[0.1],"dew_point_2m":[55.0],"wind_speed_10m":[5.0],"wind_direction_10m":[180],"uv_index":[4.0]},"daily":{"time":["2026-10-01"],"temperature_2m_max":[72.0],"temperature_2m_min":[55.0],"precipitation_sum":[0.2],"precipitation_probability_max":[40],"sunrise":["2026-10-01T06:30"],"sunset":["2026-10-01T18:10"],"weather_code":[2]}}"""</ID>
+    <ID>MaxLineLength:WeatherRepositoryImplTest.kt$WeatherRepositoryImplTest.TestWeatherDao$override suspend fun getDailyForecast(locationId: Long): List&lt;DailyForecastEntity&gt;</ID>
+    <ID>MaxLineLength:WeatherRepositoryImplTest.kt$WeatherRepositoryImplTest.TestWeatherDao$override suspend fun getFavoriteLocations(): List&lt;LocationEntity&gt;</ID>
+    <ID>MaxLineLength:WeatherRepositoryImplTest.kt$WeatherRepositoryImplTest.TestWeatherDao$override suspend fun getHourlyForecast(locationId: Long): List&lt;HourlyForecastEntity&gt;</ID>
+    <ID>MaxLineLength:WeatherRepositoryImplTest.kt$WeatherRepositoryImplTest.TestWeatherDao$override suspend fun getWeather(locationId: Long): WeatherEntity?</ID>
+    <ID>SwallowedException:SettingsViewModel.kt$SettingsViewModel$error: Exception</ID>
+    <ID>SwallowedException:WeatherRepositoryImpl.kt$WeatherRepositoryImpl$e: Exception</ID>
+    <ID>SwallowedException:WeatherSyncWorker.kt$WeatherSyncWorker$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:SettingsViewModel.kt$SettingsViewModel$error: Exception</ID>
+    <ID>TooGenericExceptionCaught:WeatherHomeViewModel.kt$WeatherHomeViewModel$error: Exception</ID>
+    <ID>TooGenericExceptionCaught:WeatherRepositoryImpl.kt$WeatherRepositoryImpl$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:WeatherRepositoryImpl.kt$WeatherRepositoryImpl$error: Exception</ID>
+    <ID>TooGenericExceptionCaught:WeatherSyncWorker.kt$WeatherSyncWorker$e: Exception</ID>
+    <ID>TooManyFunctions:WeatherDao.kt$WeatherDao</ID>
+    <ID>TooManyFunctions:WeatherHomeScreen.kt$io.github.erexer.tropo.ui.home.WeatherHomeScreen.kt</ID>
+    <ID>TooManyFunctions:WeatherRepository.kt$WeatherRepository</ID>
+    <ID>TooManyFunctions:WeatherRepositoryImpl.kt$WeatherRepositoryImpl : WeatherRepository</ID>
+  </CurrentIssues>
+</SmellBaseline>
